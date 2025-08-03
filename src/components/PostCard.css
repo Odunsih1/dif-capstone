@@ -1,0 +1,44 @@
+.post-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin: 20px auto;
+  max-width: 500px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.user-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.username {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.post-img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+}
+
+.post-actions {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.caption {
+  padding: 0 10px 10px;
+  font-size: 14px;
+}
