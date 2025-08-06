@@ -21,11 +21,22 @@ function ProfilePosts({ posts, isOwnProfile }) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow">
-      {/* Posts Grid - Instagram Style */}
-      <div className="grid grid-cols-3 gap-1 p-1">
+    <div className="bg-white">
+      {/* Posts Grid - Figma spec: 124x124 with 4px gap */}
+      <div 
+        className="grid gap-1"
+        style={{
+          gridTemplateColumns: 'repeat(3, 124px)',
+          gap: '4px',
+          justifyContent: 'center'
+        }}
+      >
         {posts.map((post) => (
-          <div key={post.id} className="aspect-square bg-gray-100 rounded overflow-hidden group cursor-pointer">
+          <div 
+            key={post.id} 
+            className="bg-gray-100 overflow-hidden group cursor-pointer relative"
+            style={{ width: '124px', height: '124px' }}
+          >
             {post.imageUrl ? (
               <div className="relative h-full">
                 <img 
@@ -36,16 +47,16 @@ function ProfilePosts({ posts, isOwnProfile }) {
                 {/* Hover overlay with likes count */}
                 <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <div className="flex items-center text-white">
-                    <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                     </svg>
-                    <span className="font-semibold">{post.likes?.length || 0}</span>
+                    <span className="font-medium text-sm">{post.likes?.length || 0}</span>
                   </div>
                 </div>
               </div>
             ) : (
               <div className="h-full bg-gray-200 flex items-center justify-center">
-                <div className="text-center text-gray-500 p-4">
+                <div className="text-center text-gray-500 p-2">
                   <p className="text-xs font-medium truncate">{post.caption}</p>
                 </div>
               </div>
@@ -53,13 +64,6 @@ function ProfilePosts({ posts, isOwnProfile }) {
           </div>
         ))}
       </div>
-
-      {/* Alternative: List View (uncomment if preferred) */}
-      {/* <div className="space-y-4 p-4">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
-      </div> */}
     </div>
   );
 }
