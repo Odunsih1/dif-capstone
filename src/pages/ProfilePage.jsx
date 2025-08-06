@@ -52,6 +52,7 @@ function ProfilePage() {
             email: userData?.email || profileUsername,
             name: userData?.name || '',
             bio: userData?.bio || '',
+            location: userData?.location || '', // NEW FIELD - displays in profile
             website: userData?.website || '',
             postsCount: userPosts.length,
             followersCount: userData?.followersCount || 0,

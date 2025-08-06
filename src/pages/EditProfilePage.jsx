@@ -12,6 +12,7 @@ function EditProfilePage() {
     username: '',
     website: '',
     bio: '',
+    location: '', // NEW FIELD - automatically handled by Firestore
     email: '',
     phone: '',
     gender: 'Male'
@@ -34,6 +35,7 @@ function EditProfilePage() {
             username: userData.username || currentUser.email?.split('@')[0] || '',
             website: userData.website || '',
             bio: userData.bio || '',
+            location: userData.location || '', // NEW FIELD - loads from Firestore
             email: userData.email || currentUser.email || '',
             phone: userData.phone || '',
             gender: userData.gender || 'Male'
@@ -209,6 +211,21 @@ function EditProfilePage() {
                 className="edit-profile-input flex-1 py-3 text-sm border-none outline-none resize-none lg:text-base"
                 placeholder="Digital goodies designer @pixaelz Everything is designed."
                 rows="2"
+              />
+            </div>
+          </div>
+
+          {/* Location Field - NEW ADDITION */}
+          <div className="border-b border-gray-200 pb-3">
+            <div className="flex">
+              <label className="edit-profile-label w-20 text-gray-600 text-sm py-3 lg:w-28">Location</label>
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleInputChange}
+                className="edit-profile-input flex-1 py-3 text-sm border-none outline-none lg:text-base"
+                placeholder="San Francisco, CA"
               />
             </div>
           </div>
