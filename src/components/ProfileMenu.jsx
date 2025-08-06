@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
+import { 
+  MdArchive, 
+  MdBarChart, 
+  MdCropFree, 
+  MdBookmarkBorder, 
+  MdStars, 
+  MdPersonAdd, 
+  MdSettings 
+} from 'react-icons/md';
+import { FaFacebookSquare } from 'react-icons/fa';
 
 function ProfileMenu({ isOpen, onClose }) {
   const [userProfile, setUserProfile] = useState(null);
@@ -52,30 +62,37 @@ function ProfileMenu({ isOpen, onClose }) {
 
   const menuItems = [
     {
+      icon: <MdArchive size={20} />,
       label: "Archive",
       onClick: () => console.log('Archive clicked')
     },
     {
+      icon: <MdBarChart size={20} />,
       label: "Your Activity",
       onClick: () => console.log('Your Activity clicked')
     },
     {
+      icon: <MdCropFree size={20} />,
       label: "Nametag", 
       onClick: () => console.log('Nametag clicked')
     },
     {
+      icon: <MdBookmarkBorder size={20} />,
       label: "Saved",
       onClick: () => console.log('Saved clicked')
     },
     {
+      icon: <MdStars size={20} />,
       label: "Close Friends",
       onClick: () => console.log('Close Friends clicked')
     },
     {
+      icon: <MdPersonAdd size={20} />,
       label: "Discover People",
       onClick: () => console.log('Discover People clicked')
     },
     {
+      icon: <FaFacebookSquare size={20} />,
       label: "Open Facebook",
       onClick: () => console.log('Open Facebook clicked')
     }
@@ -128,6 +145,7 @@ function ProfileMenu({ isOpen, onClose }) {
               onClick={item.onClick}
               className="w-full px-4 py-3 flex items-center text-left hover:bg-gray-50"
             >
+              <span className="text-gray-700 mr-3">{item.icon}</span>
               <span className="text-gray-900 font-normal text-base">{item.label}</span>
             </button>
           ))}
@@ -136,6 +154,7 @@ function ProfileMenu({ isOpen, onClose }) {
         {/* Settings at bottom */}
         <div className="absolute bottom-6 left-4 right-4">
           <button className="w-full px-4 py-3 flex items-center text-left border-t border-gray-200 pt-4">
+            <span className="text-gray-700 mr-3"><MdSettings size={20} /></span>
             <span className="text-gray-900 font-normal text-base">Settings</span>
           </button>
         </div>
