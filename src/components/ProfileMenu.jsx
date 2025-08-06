@@ -1,7 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { auth, db } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 function ProfileMenu({ isOpen, onClose }) {
-  if (!isOpen) return null;
+  const [userProfile, setUserProfile] = useState(null);
+  const currentUser = auth.currentUser;
+
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      if (!currentUser) return;
+      
+      try {
+        const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setUserProfile({
+            username: userData.username || currentUser.email?.split('@')[0] || 'user',
+            name: userData.name || '',
+            followersCount: userData.followersCount || 0,
+            followingCount: userData.followingCount || 0,
+            profileImage: userData.profileImage || null
+          });
+        } else {
+          // Fallback to basic user data
+          setUserProfile({
+            username: currentUser.email?.split('@')[0] || 'user',
+            name: currentUser.displayName || '',
+            followersCount: 0,
+            followingCount: 0,
+            profileImage: currentUser.photoURL || null
+          });
+        }
+      } catch (error) {
+        console.error('Error loading user profile:', error);
+        // Fallback
+        setUserProfile({
+          username: currentUser.email?.split('@')[0] || 'user',
+          name: currentUser.displayName || '',
+          followersCount: 0,
+          followingCount: 0,
+          profileImage: currentUser.photoURL || null
+        });
+      }
+    };
+
+    if (isOpen && currentUser) {
+      loadUserProfile();
+    }
+  }, [isOpen, currentUser]);
+  if (!isOpen || !currentUser) return null;
 
   const menuItems = [
     {
@@ -50,14 +97,24 @@ function ProfileMenu({ isOpen, onClose }) {
         {/* Header with username */}
         <div className="px-4 py-6 border-b border-gray-200">
           <div className="flex items-center">
-            <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center mr-3">
-              <div className="w-6 h-6 bg-gray-500 rounded-full"></div>
+            <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center mr-3 overflow-hidden">
+              {userProfile?.profileImage ? (
+                <img 
+                  src={userProfile.profileImage} 
+                  alt="Profile" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-6 h-6 bg-gray-500 rounded-full"></div>
+              )}
             </div>
             <div>
-              <p className="font-medium text-gray-900">@hasanov.</p>
+              <p className="font-medium text-gray-900">
+                @{userProfile?.username || 'loading...'}
+              </p>
               <div className="flex text-sm text-gray-600 mt-1">
-                <span className="mr-4">162 Following</span>
-                <span>162 Followers</span>
+                <span className="mr-4">{userProfile?.followingCount || 0} Following</span>
+                <span>{userProfile?.followersCount || 0} Followers</span>
               </div>
             </div>
           </div>
