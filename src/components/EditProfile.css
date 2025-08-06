@@ -1,0 +1,51 @@
+/* EditProfile responsive styles */
+.edit-profile-container {
+  /* Mobile First - 375px */
+  width: 100%;
+  max-width: 375px;
+  margin: 0 auto;
+  background: white;
+  min-height: 100vh;
+}
+
+/* Tablet styles - 768px and up */
+@media (min-width: 768px) {
+  .edit-profile-container {
+    max-width: 500px;
+    margin-top: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    min-height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+/* Desktop styles - 1024px and up */
+@media (min-width: 1024px) {
+  .edit-profile-container {
+    max-width: 600px;
+    margin-top: 3rem;
+  }
+  
+  .edit-profile-form-section {
+    padding: 2rem;
+  }
+  
+  .edit-profile-input {
+    padding: 0.875rem;
+    font-size: 1rem;
+  }
+  
+  .edit-profile-label {
+    font-size: 1rem;
+    min-width: 100px;
+  }
+}
+
+/* Large desktop styles - 1280px and up */
+@media (min-width: 1280px) {
+  .edit-profile-container {
+    max-width: 700px;
+  }
+}
