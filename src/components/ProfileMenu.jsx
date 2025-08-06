@@ -161,6 +161,6 @@ function ProfileMenu({ isOpen, onClose }) {
       </div>
     </>
   );
-}
+} 
 
 export default ProfileMenu;
