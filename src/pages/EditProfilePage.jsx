@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 import '../components/EditProfile.css';
 
 function EditProfilePage() {
@@ -15,17 +16,51 @@ function EditProfilePage() {
     phone: '',
     gender: 'Male'
   });
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    // Pre-fill with current user data
-    if (currentUser) {
-      setFormData(prev => ({
-        ...prev,
-        email: currentUser.email || '',
-        name: currentUser.displayName || '',
-        username: currentUser.email?.split('@')[0] || ''
-      }));
-    }
+    // Load existing profile data from Firestore
+    const loadProfile = async () => {
+      if (!currentUser) return;
+      
+      setLoading(true);
+      try {
+        const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setFormData({
+            name: userData.name || currentUser.displayName || '',
+            username: userData.username || currentUser.email?.split('@')[0] || '',
+            website: userData.website || '',
+            bio: userData.bio || '',
+            email: userData.email || currentUser.email || '',
+            phone: userData.phone || '',
+            gender: userData.gender || 'Male'
+          });
+        } else {
+          // Pre-fill with current user data if no profile exists
+          setFormData(prev => ({
+            ...prev,
+            email: currentUser.email || '',
+            name: currentUser.displayName || '',
+            username: currentUser.email?.split('@')[0] || ''
+          }));
+        }
+      } catch (error) {
+        console.error('Error loading profile:', error);
+        // Fallback to current user data
+        setFormData(prev => ({
+          ...prev,
+          email: currentUser.email || '',
+          name: currentUser.displayName || '',
+          username: currentUser.email?.split('@')[0] || ''
+        }));
+      }
+      setLoading(false);
+    };
+
+    loadProfile();
   }, [currentUser]);
 
   const handleInputChange = (e) => {
@@ -36,10 +71,27 @@ function EditProfilePage() {
     }));
   };
 
-  const handleSave = () => {
-    // TODO: Implement save functionality
-    console.log('Saving profile:', formData);
-    navigate('/profile');
+  const handleSave = async () => {
+    if (!currentUser) return;
+    
+    setSaving(true);
+    try {
+      // Save to Firestore users collection
+      await setDoc(doc(db, 'users', currentUser.uid), {
+        ...formData,
+        uid: currentUser.uid,
+        email: currentUser.email, // Keep original email
+        updatedAt: new Date(),
+        createdAt: new Date() // Will only set if document doesn't exist
+      }, { merge: true }); // merge: true will update existing fields without overwriting the entire document
+
+      console.log('Profile saved successfully!');
+      navigate('/profile');
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      alert('Failed to save profile. Please try again.');
+    }
+    setSaving(false);
   };
 
   const handleCancel = () => {
@@ -65,9 +117,14 @@ function EditProfilePage() {
           <h1 className="text-lg font-semibold lg:text-xl">Edit Profile</h1>
           <button 
             onClick={handleSave}
-            className="text-blue-500 font-semibold lg:text-lg"
+            disabled={saving}
+            className={`font-semibold lg:text-lg ${
+              saving 
+                ? 'text-gray-400 cursor-not-allowed' 
+                : 'text-blue-500'
+            }`}
           >
-            Done
+            {saving ? 'Saving...' : 'Done'}
           </button>
         </div>
 
