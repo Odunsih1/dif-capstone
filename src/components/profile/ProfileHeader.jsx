@@ -54,8 +54,15 @@ function ProfileHeader({ userProfile, isOwnProfile }) {
 
           {/* Bio */}
           {userProfile.bio && (
-            <div className="text-xs">
+            <div className="text-xs mb-1">
               <p>{userProfile.bio}</p>
+            </div>
+          )}
+
+          {/* Location - NEW FIELD */}
+          {userProfile.location && (
+            <div className="text-xs text-gray-500">
+              <p>📍 {userProfile.location}</p>
             </div>
           )}
         </div>
