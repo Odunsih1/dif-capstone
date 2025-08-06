@@ -1,41 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 function ProfileMenu({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   const menuItems = [
     {
-      icon: "📁",
       label: "Archive",
       onClick: () => console.log('Archive clicked')
     },
     {
-      icon: "📈", 
       label: "Your Activity",
       onClick: () => console.log('Your Activity clicked')
     },
     {
-      icon: "🏷️",
       label: "Nametag", 
       onClick: () => console.log('Nametag clicked')
     },
     {
-      icon: "🔖",
       label: "Saved",
       onClick: () => console.log('Saved clicked')
     },
     {
-      icon: "👥",
       label: "Close Friends",
       onClick: () => console.log('Close Friends clicked')
     },
     {
-      icon: "👤",
       label: "Discover People",
       onClick: () => console.log('Discover People clicked')
     },
     {
-      icon: "📘",
       label: "Open Facebook",
       onClick: () => console.log('Open Facebook clicked')
     }
@@ -57,12 +50,12 @@ function ProfileMenu({ isOpen, onClose }) {
         {/* Header with username */}
         <div className="px-4 py-6 border-b border-gray-200">
           <div className="flex items-center">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold mr-3">
-              @
+            <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center mr-3">
+              <div className="w-6 h-6 bg-gray-500 rounded-full"></div>
             </div>
             <div>
-              <p className="font-semibold text-gray-900">@hasanov.</p>
-              <div className="flex items-center text-sm text-gray-600">
+              <p className="font-medium text-gray-900">@hasanov.</p>
+              <div className="flex text-sm text-gray-600 mt-1">
                 <span className="mr-4">162 Following</span>
                 <span>162 Followers</span>
               </div>
@@ -76,19 +69,17 @@ function ProfileMenu({ isOpen, onClose }) {
             <button
               key={index}
               onClick={item.onClick}
-              className="w-full px-4 py-4 flex items-center text-left hover:bg-gray-50 transition-colors duration-150"
+              className="w-full px-4 py-3 flex items-center text-left hover:bg-gray-50"
             >
-              <span className="mr-4 text-xl">{item.icon}</span>
-              <span className="text-gray-900 font-medium">{item.label}</span>
+              <span className="text-gray-900 font-normal text-base">{item.label}</span>
             </button>
           ))}
         </div>
 
         {/* Settings at bottom */}
-        <div className="absolute bottom-4 left-4 right-4">
+        <div className="absolute bottom-6 left-4 right-4">
           <button className="w-full px-4 py-3 flex items-center text-left border-t border-gray-200 pt-4">
-            <span className="mr-4 text-xl">⚙️</span>
-            <span className="text-gray-900 font-medium">Settings</span>
+            <span className="text-gray-900 font-normal text-base">Settings</span>
           </button>
         </div>
       </div>
